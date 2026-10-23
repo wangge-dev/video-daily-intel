@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 视频情报局 · 使用说明</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --ink: #1a1d21;
+    --ink-2: #4b5563;
+    --ink-3: #8b929c;
+    --line: #e6e8eb;
+    --bg: #f6f7f8;
+    --card: #ffffff;
+    --accent: #0f766e;
+    --accent-soft: #ecf5f3;
+    --warn: #b45309;
+    --warn-soft: #fef9ee;
+    --warn-line: #f2dfb8;
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+                 "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+    padding: 56px 24px 72px;
+  }
+  .wrap { max-width: 820px; margin: 0 auto; }
+
+  /* hero */
+  .hero { margin-bottom: 52px; }
+  .hero .kicker {
+    font-size: 12px; letter-spacing: .16em; text-transform: uppercase;
+    color: var(--accent); font-weight: 600; margin-bottom: 14px;
+  }
+  .hero h1 { font-size: 38px; line-height: 1.25; letter-spacing: -.02em; font-weight: 700; }
+  .hero p { margin-top: 14px; font-size: 17px; color: var(--ink-2); max-width: 560px; }
+  .tags { margin-top: 22px; display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag {
+    font-size: 13px; color: var(--accent); background: var(--accent-soft);
+    padding: 5px 12px; border-radius: 100px;
+  }
+
+  /* section */
+  section { margin-bottom: 46px; }
+  section > h2 {
+    font-size: 19px; font-weight: 650; letter-spacing: -.01em;
+    padding-left: 13px; border-left: 3px solid var(--accent);
+    margin-bottom: 22px; line-height: 1.4;
+  }
+
+  /* cards */
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  @media (max-width: 700px) { .grid { grid-template-columns: 1fr; } }
+  .card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+    padding: 20px 18px;
+  }
+  .card .n {
+    font-size: 12px; font-weight: 700; color: var(--ink-3); letter-spacing: .08em;
+    margin-bottom: 10px;
+  }
+  .card h3 { font-size: 15px; font-weight: 650; margin-bottom: 7px; }
+  .card p { font-size: 13.5px; color: var(--ink-2); line-height: 1.65; }
+
+  /* steps */
+  .steps { display: flex; flex-direction: column; gap: 2px; }
+  .step {
+    display: flex; gap: 16px; background: var(--card);
+    border: 1px solid var(--line); padding: 18px 20px;
+  }
+  .step:first-child { border-radius: 12px 12px 0 0; }
+  .step:last-child { border-radius: 0 0 12px 12px; }
+  .step + .step { border-top: none; }
+  .step .idx {
+    flex: 0 0 26px; height: 26px; border-radius: 50%;
+    background: var(--accent-soft); color: var(--accent);
+    font-size: 13px; font-weight: 700; display: flex;
+    align-items: center; justify-content: center;
+  }
+  .step .body { flex: 1; min-width: 0; }
+  .step strong { font-weight: 650; font-size: 15px; }
+  .step p { font-size: 13.5px; color: var(--ink-2); margin-top: 3px; }
+
+  code {
+    font-family: "SF Mono", "Cascadia Code", Consolas, monospace;
+    font-size: 12.5px; background: #eef0f2; color: #334155;
+    padding: 2px 6px; border-radius: 4px; white-space: nowrap;
+  }
+  .say {
+    display: block; background: var(--accent-soft); color: #0b5c56;
+    border-radius: 8px; padding: 12px 16px; font-size: 14px;
+    margin-top: 10px; font-weight: 500;
+  }
+
+  /* table */
+  table { width: 100%; border-collapse: collapse; background: var(--card);
+          border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+  th, td { text-align: left; padding: 13px 18px; font-size: 13.5px; }
+  th { background: #fafbfc; font-weight: 600; color: var(--ink-2); font-size: 12.5px;
+       letter-spacing: .04em; border-bottom: 1px solid var(--line); }
+  td { border-bottom: 1px solid #f0f2f4; color: var(--ink-2); }
+  tr:last-child td { border-bottom: none; }
+  td:first-child { color: var(--ink); font-weight: 500; }
+
+  /* limits */
+  .limits { background: var(--warn-soft); border: 1px solid var(--warn-line);
+            border-radius: 12px; padding: 6px 22px; }
+  .limit { padding: 18px 0; }
+  .limit + .limit { border-top: 1px solid var(--warn-line); }
+  .limit h3 { font-size: 14.5px; font-weight: 650; color: #92400e; margin-bottom: 5px; }
+  .limit p { font-size: 13.5px; color: #6b4a1a; line-height: 1.7; }
+
+  /* notes */
+  .notes { list-style: none; }
+  .notes li {
+    position: relative; padding-left: 26px; margin-bottom: 13px;
+    font-size: 14px; color: var(--ink-2);
+  }
+  .notes li::before {
+    content: ""; position: absolute; left: 8px; top: 10px;
+    width: 5px; height: 5px; border-radius: 50%; background: var(--accent);
+  }
+  .notes li b { color: var(--ink); font-weight: 650; }
+
+  /* shots */
+  figure { margin-bottom: 26px; }
+  figure img {
+    width: 100%; display: block; border: 1px solid var(--line);
+    border-radius: 12px; background: #fff;
+  }
+  figcaption {
+    font-size: 12.5px; color: var(--ink-3); margin-top: 9px; line-height: 1.6;
+  }
+  figcaption b { color: var(--ink-2); font-weight: 600; }
+
+  /* tree */
+  pre {
+    background: #fbfcfd; border: 1px solid var(--line); border-radius: 12px;
+    padding: 20px 22px; font-family: "SF Mono", "Cascadia Code", Consolas, monospace;
+    font-size: 12.5px; line-height: 1.95; color: #475569; overflow-x: auto;
+  }
+  pre .f { color: #0f766e; }
+  pre .c { color: #9aa3af; }
+
+  footer {
+    margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--line);
+    font-size: 12.5px; color: var(--ink-3); line-height: 1.9;
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="kicker">WorkBuddy Skill · 使用说明</div>
+    <h1>AI 视频情报局</h1>
+    <p>手机上刷抖音随手点收藏，电脑上跑一次，视频里的口播内容变成文字笔记和日报，存进你自己的知识库。</p>
+    <div class="tags">
+      <span class="tag">本地转写，不上传</span>
+      <span class="tag">Obsidian 双链</span>
+      <span class="tag">不用买 API</span>
+    </div>
+  </div>
+
+  <section>
+    <h2>它能干什么</h2>
+    <div class="grid">
+      <div class="card">
+        <div class="n">01</div>
+        <h3>视频转文字</h3>
+        <p>自动把收藏的视频下载下来，用本地 Whisper 模型跑出逐字稿，不用手动听写。</p>
+      </div>
+      <div class="card">
+        <div class="n">02</div>
+        <h3>整理成笔记</h3>
+        <p>每条视频一篇 Markdown，标题、作者、原链接、逐字稿齐全，按收藏和喜欢分开存放。</p>
+      </div>
+      <div class="card">
+        <div class="n">03</div>
+        <h3>出每日日报</h3>
+        <p>汇总当天新增内容，自动过滤掉没有口播的条目，双链一点就跳转到对应笔记。</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>怎么装</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="idx">1</div>
+        <div class="body">
+          <strong>放好文件夹</strong>
+          <p>把整个 <code>video-daily-intel</code> 文件夹放到 <code>用户目录/.workbuddy/skills/</code> 下。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="idx">2</div>
+        <div class="body">
+          <strong>跑一次安装</strong>
+          <p>双击 <code>一键安装(Windows).bat</code>，或者让 WorkBuddy 执行 <code>python scripts/install.py</code>。两三分钟，不动系统环境；缺 ffmpeg 会自动补上。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="idx">3</div>
+        <div class="body">
+          <strong>说一句话</strong>
+          <p>打开 WorkBuddy，说「启动视频情报局」，跟着向导走：定知识库位置、扫码、跑一次。</p>
+          <span class="say">启动视频情报局</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>平时怎么用</h2>
+    <table>
+      <tr>
+        <th style="width:34%">你想干的事</th>
+        <th>就说这句</th>
+      </tr>
+      <tr>
+        <td>整理新收藏</td>
+        <td>立即同步收藏，出今天的早报</td>
+      </tr>
+      <tr>
+        <td>拆解某条视频</td>
+        <td>帮我拆解这个视频：https://v.douyin.com/xxxx/</td>
+      </tr>
+      <tr>
+        <td>换知识库位置</td>
+        <td>把知识库换到 D:\我的笔记 目录</td>
+      </tr>
+      <tr>
+        <td>校对逐字稿</td>
+        <td>把这批里专业名词多的那几篇校对一遍，人名术语核准</td>
+      </tr>
+      <tr>
+        <td>整理知识库</td>
+        <td>整理一下知识库，按主题归一下类</td>
+      </tr>
+      <tr>
+        <td>看哪些还没处理</td>
+        <td>看看库里哪些笔记还没校对、哪些标点丢了</td>
+      </tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>局限在哪</h2>
+    <div class="limits">
+      <div class="limit">
+        <h3>只对有人讲话的视频有用</h3>
+        <p>纯音乐、纯字幕、图文、剧情片段，模型转不出内容，要么空白要么只有两三个字。这类视频抓了等于白抓，日报会自动跳过它们。</p>
+      </div>
+      <div class="limit">
+        <h3>转写要花时间，显卡差很多</h3>
+        <p>有 NVIDIA 显卡时约 6 倍速，纯 CPU 约 2 倍速。<b>转写时别开大型游戏</b>，显卡被占住速度会掉到十分之一，同样的活可能从十几分钟拖到一个小时。</p>
+      </div>
+      <div class="limit">
+        <h3>专业名词会错，而且错得不少</h3>
+        <p>方言、多人抢话、背景音乐只是小问题。真正麻烦的是术语和人名：默认模型没有历史、法律、医学这些知识，全靠音猜。术语越密集的视频，机器稿里错的专名越多，这类要留出时间整篇核对。</p>
+        <p style="margin-top:8px"><b>口语叙事、影视解说直接用；专业内容转完让 AI 通读校对一遍，再拿去引用。</b>换更大的模型能少错，但需要 2 GB 以上空闲显存，纯 CPU 跑慢到 1.7 倍实时。</p>
+      </div>
+      <div class="limit">
+        <h3>分析要靠对话，不会自己出报告</h3>
+        <p>工具负责抓取、转写、落盘，以及告诉你哪篇还没校对。至于这批视频讲了什么、哪些值得留着、能不能提炼成方法，是 WorkBuddy 在对话里读完逐字稿再写的。视频里没干货，它也写不出来。</p>
+        <p style="margin-top:8px">按主题归类这件事能半自动：脚本按话题标签先聚一遍，给出分组草稿，剩下的评价和取舍由人定。</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>几个容易踩的坑</h2>
+    <ul class="notes">
+      <li><b>收藏不是喜欢。</b>抖音里⭐收藏和❤️喜欢是两套列表。工具默认抓收藏，你点的是爱心就抓不到，这是最常见的「同步成功但 0 条」的原因。</li>
+      <li><b>扫码要扫对号。</b>如果手机上有两个抖音号，务必扫平时收藏视频那个，扫错了会一直空。</li>
+      <li><b>ffmpeg 会自动装，不用你操心。</b>视频转音频靠它。安装脚本发现系统里没有，会自动下一份放进运行环境里。只有网络不通导致下载失败时，才需要手动装一次：<code>winget install Gyan.FFmpeg</code>。</li>
+      <li><b>账号风险的性质要说清。</b>工具复用你本机浏览器的登录态去读自己的收藏列表，Cookie 只存本地不往外传。风险在账号风控和平台条款这一层，正常频率使用没问题，别一天跑几百条。</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>跑完长什么样</h2>
+    <pre>知识库/
+├── <span class="f">收藏/</span>
+│   ├── collection-7496....md      <span class="c">← 每条视频一篇，含完整逐字稿</span>
+│   └── collection-7684....md
+├── <span class="f">喜欢/</span>
+│   └── like-7675....md
+├── <span class="f">日报/</span>
+│   └── 2026-10-21-收藏日报.md      <span class="c">← 当天新增汇总</span>
+├── <span class="f">00_总览.md</span>                  <span class="c">← 自己维护的索引，按主题分组</span>
+├── <span class="f">主题/</span>                      <span class="c">← 同一话题够 3 篇才建</span>
+├── <span class="f">分析/</span>                      <span class="c">← 要出文章时才写</span>
+├── <span class="f">模板/</span>
+└── <span class="f">系统/</span>
+    └── <span class="f">原始稿/</span>                  <span class="c">← 校对前的机器稿，留着比对</span></pre>
+  </section>
+
+  <section>
+    <h2>存进去之后怎么用</h2>
+    <ul class="notes">
+      <li><b>看日报。</b>日报里的标题是双链，点一下直接进那篇笔记。没口播的条目不会出现在日报里。</li>
+      <li><b>全文搜索。</b>搜的是逐字稿正文，记得的某句话、某个人名都能命中，不用回去拖进度条。</li>
+      <li><b>建一张总览页。</b>按主题分组，一条写一句它讲了什么、能拿来干嘛。写东西时从这张表里挑。同一个话题攒到 3 篇以上再单独建主题页，不够就先只留总览。</li>
+      <li><b>看哪些还没校对。</b>笔记前面没有校对标记的，都是机器稿。引用、写文章之前先过一遍，专业内容尤其不能省。</li>
+      <li><b>丢给 AI 读。</b>笔记是纯文本 md，把路径发给 AI 让它读完再回答，比给链接靠谱。</li>
+      <li><b>挪位置不断链。</b>双链认文件名不认路径，笔记挪到别的文件夹，链接照样能跳。</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>实际跑一遍长什么样</h2>
+    <p style="font-size:14px;color:var(--ink-2);margin:-8px 0 22px">
+      下面是完整流程的截图，从点收藏到出日报。
+    </p>
+
+    <figure>
+      <img src="截图/01-收藏夹.png" alt="抖音网页端收藏列表">
+      <figcaption><b>1 / 起点。</b>手机刷到想留的视频点五角星，电脑上打开抖音「我的 · 收藏」能看到它们。同步抓的就是这一页的列表。</figcaption>
+    </figure>
+
+    <figure>
+      <img src="截图/02-笔记.png" alt="生成的 Markdown 笔记">
+      <figcaption><b>2 / 产出。</b>每条视频一篇 Markdown，标题、作者、原链接、时长、逐字稿全在里面。逐字稿按行断开，读起来是字幕的节奏，不是一大坨。</figcaption>
+    </figure>
+
+    <figure>
+      <img src="截图/03-日报.png" alt="当天日报">
+      <figcaption><b>3 / 日报。</b>当天新增汇总成一个页面，日期、条数、每条的标题和双链一目了然。没有口播的条目不会出现在这里。</figcaption>
+    </figure>
+
+    <figure>
+      <img src="截图/04-知识库.png" alt="知识库目录结构">
+      <figcaption><b>4 / 沉淀。</b>笔记按来源分到 <code>收藏/</code> 和 <code>喜欢/</code> 子目录，日报单独一栏。时间长了就是一个能搜、能跳转、能丢给 AI 读的本地库。</figcaption>
+    </figure>
+  </section>
+
+  <footer>
+    底层引擎 <a href="https://github.com/tars1230/douyin-favorites-to-knowledge">douyin-favorites-to-knowledge</a> v2.3.3（MIT 协议）+ douyin-knowledge-core 0.2.1，安装器、兼容补丁与全部文档为本版重写。<br>
+    本版在原包基础上修了十七处会导致装不上、跑不通或产出脏数据的问题，详见 <code>README.md</code>。
+  </footer>
+
+</div>
+</body>
+</html>

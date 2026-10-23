@@ -1,0 +1,27 @@
+【方式一 · 最推荐】双击安装
+- Windows：双击「一键安装(Windows).bat」
+- Mac：双击「一键安装(Mac).command」
+
+需要本机已装 Python 3.10 或更高版本，以及 ffmpeg。
+安装过程约两三分钟，会建一个独立环境，不动系统 Python。
+
+【方式二 · 让 WorkBuddy 装】
+先把整个文件夹放到 ~/.workbuddy/skills/video-daily-intel，
+然后在 WorkBuddy 对话框里说一句：
+
+    装一下视频情报局
+
+【方式三 · 命令行】
+    cd ~/.workbuddy/skills/video-daily-intel
+    python scripts/install.py
+
+装完验证：scripts/run.cmd status（Mac 用 ./run.sh status）
+返回 logged_out 或 authenticated 都算正常。
+
+之后对 WorkBuddy 说【启动视频情报局】进入配置向导：
+先定知识库位置，再扫码绑定抖音（扫你平时收藏视频的那个号），最后跑一次同步。
+
+注意事项：
+1. 抖音的「收藏」和「喜欢」是两套东西。收藏是⭐，喜欢是❤️，本工具默认抓收藏。
+2. 只有对着镜头讲话的视频才有转写价值，纯音乐、纯字幕、剧情片段转不出内容。
+3. CPU 转写约 0.5 倍速，9 分钟视频要转 5 分钟，不建议设每日定时任务。

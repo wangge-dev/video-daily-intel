@@ -1,0 +1,14 @@
+# 视频情报局运行依赖
+#
+# 注意：faster-whisper 不在本文件里，安装脚本会单独用 --no-deps 装它。
+# 原因：它声明依赖 av<13，而 av 12 没有 Python 3.13 的预编译包，
+# pip 会去找源码编译然后失败。这里直接跳过它的依赖声明，改用新版 av。
+
+av>=12.3
+ctranslate2>=4.5
+tokenizers>=0.15
+onnxruntime>=1.17
+huggingface-hub>=0.24
+numpy>=1.26
+playwright>=1.40
+yt-dlp>=2025.1.1
